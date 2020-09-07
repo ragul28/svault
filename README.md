@@ -6,6 +6,21 @@ Simple key-value secret Vault inspired by Hasicorp Vault. Project try to explore
 * Secret encryption AES256-GCM
 * Easy cli interface  
 
+## Basic Usage
+
+* Init svault secret engine which generates svault masterkey.
+```sh
+svault init
+```
+
+* Store & get secret from key vault.
+```sh
+export MASTER_KEY=<master_key>
+
+svault store github_token xxxxxxxx
+svault get github_token
+```
+
 ## Build Process
 
 Build using go environment.
