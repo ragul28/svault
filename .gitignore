@@ -1,0 +1,22 @@
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
+# Ignore `bin` dir
+bin/
+*/bin/*
+tmp/
+dist/
+vault_data/
+
+# Unignore files
+!Dockerfile
+!Makefile
+
+# Ignore files
+checklist.md
