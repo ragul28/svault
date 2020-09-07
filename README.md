@@ -6,6 +6,15 @@ Simple key-value secret Vault inspired by Hasicorp Vault. Project try to explore
 * Secret encryption AES256-GCM
 * Easy cli interface  
 
+## Build Process
+
+Build using go environment.
+```sh
+git clone https://github.com/ragul28/svault
+cd svault
+make build
+```
+
 ## CheckList
 
 - [ ] Make cipher as common package.
