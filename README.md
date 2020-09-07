@@ -1,10 +1,10 @@
 # SVault
 
-Simple key-value secret Vault inspired by Hasicorp Vault. Project try to explore the inner working of vault engine with golang. SVault uses AES256-GCM encryption for secret store.This a exploitative project intend to stay as Experimental.
+Simple key-value secret Vault inspired by Hasicorp Vault. Project tries to explore the inner working of vault engine with golang. SVault uses AES256-GCM encryption for secret store. This a exploratory project & intend to stay as Experimental.
 
 * Secret KV storage
 * Secret encryption AES256-GCM
-* Easy cli interface  
+* Easy cli interface.
 
 ## Basic Usage
 

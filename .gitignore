@@ -17,6 +17,7 @@ vault_data/
 # Unignore files
 !Dockerfile
 !Makefile
+!LICENSE
 
 # Ignore files
 checklist.md
