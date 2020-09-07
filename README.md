@@ -10,6 +10,12 @@ Simple key-value secret Vault inspired by Hasicorp Vault. Project tries to explo
 
 * Download from pre-compiled binarie from [release page](https://github.com/ragul28/svault/releases).
 
+```sh
+tar -xvf svault_Linux_arm64.tar.gz
+chmod +x svault
+sudo mv svault /usr/local/bin
+```
+
 * Init svault secret engine which generates svault masterkey.
 ```sh
 svault init
