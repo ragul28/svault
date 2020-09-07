@@ -8,6 +8,8 @@ Simple key-value secret Vault inspired by Hasicorp Vault. Project tries to explo
 
 ## Basic Usage
 
+* Download from pre-compiled binarie from [release page](https://github.com/ragul28/svault/releases).
+
 * Init svault secret engine which generates svault masterkey.
 ```sh
 svault init
@@ -32,7 +34,7 @@ make build
 
 ## CheckList
 
+- [x] Implement cli like interface for init, store & get
 - [ ] Add persistance storage using boltdb.
-- [ ] Implement cli like interface for init, store & get
 - [ ] Explore the stream interface from crypto/cipher lib for interface chaining. 
 - [ ] Add rest/jrpc interface.
