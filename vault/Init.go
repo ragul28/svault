@@ -6,14 +6,17 @@ import (
 	"log"
 	"math/big"
 	"os"
+	"os/user"
+	"path/filepath"
 	"time"
 )
 
 // Vault init create masterkey & storage file if not initialzed.
 func VaultInit(freshInit bool) string {
 
+	// Remove the File to indicate a fresh init
 	if freshInit {
-		_ = os.Remove(Defaultpath)
+		_ = os.Remove(getVautlPath())
 	}
 
 	// check secretFile file exist
@@ -30,6 +33,9 @@ func VaultInit(freshInit bool) string {
 		fmt.Printf("Master Key: %s\n", masterKey)
 
 		RK := VaultData{time.Now().Unix(), "root", []byte("MasterKeyGenerated"), 0}
+
+		// create dot dir for svault storage
+		os.MkdirAll(filepath.Base(getVautlPath()), os.ModePerm)
 		if writeStorage("master_key", RK) != nil {
 			log.Panic(err)
 		}
@@ -52,4 +58,12 @@ func genRandomSecretKey(n int) []byte {
 		randomKey = append(randomKey, letters[num.Int64()])
 	}
 	return randomKey
+}
+
+func getVautlPath() string {
+	user, err := user.Current()
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+	return user.HomeDir + "/.svault/svault.data"
 }

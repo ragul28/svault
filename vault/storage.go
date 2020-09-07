@@ -6,11 +6,6 @@ import (
 	"os"
 )
 
-// simple read & write interface for the file
-const (
-	Defaultpath = "./vault_data/vault.data"
-)
-
 type VaultData struct {
 	CreatedTime int64
 	Type        string
@@ -22,7 +17,7 @@ func writeStorage(Key string, v VaultData) error {
 
 	var vaultMap map[string]VaultData
 
-	if _, err := os.Stat(Defaultpath); err == nil {
+	if _, err := os.Stat(getVautlPath()); err == nil {
 		vaultMap, _, err = getStorage()
 		if err != nil {
 			return err
@@ -33,7 +28,7 @@ func writeStorage(Key string, v VaultData) error {
 
 	vaultMap[Key] = v
 
-	file, err := os.OpenFile(Defaultpath, os.O_CREATE|os.O_WRONLY, 0640)
+	file, err := os.OpenFile(getVautlPath(), os.O_CREATE|os.O_WRONLY, 0640)
 	if err != nil {
 		log.Println("File Cannot open/Found", err)
 		return err
@@ -45,7 +40,7 @@ func writeStorage(Key string, v VaultData) error {
 
 func readStorage(Key string) (VaultData, error) {
 	vaultMap := make(map[string]VaultData)
-	data, err := os.Open(Defaultpath)
+	data, err := os.Open(getVautlPath())
 	if err != nil {
 		// log.Println(err)
 		return VaultData{}, err
@@ -58,7 +53,7 @@ func readStorage(Key string) (VaultData, error) {
 
 func getStorage() (map[string]VaultData, int, error) {
 	vaultMap := make(map[string]VaultData)
-	data, err := os.Open(Defaultpath)
+	data, err := os.Open(getVautlPath())
 	if err != nil {
 		log.Fatal(err)
 		return map[string]VaultData{}, 0, err

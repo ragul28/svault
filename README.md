@@ -32,7 +32,6 @@ make build
 
 ## CheckList
 
-- [ ] Make cipher as common package.
 - [ ] Add persistance storage using boltdb.
 - [ ] Implement cli like interface for init, store & get
 - [ ] Explore the stream interface from crypto/cipher lib for interface chaining. 
