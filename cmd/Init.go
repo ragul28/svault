@@ -18,6 +18,7 @@ func init() {
 var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Init vault secret engine",
+	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		MK := vault.VaultInit(freshInit)
 		os.Setenv("MASTER_KEY", MK)

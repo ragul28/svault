@@ -15,7 +15,7 @@ func WriteVault(masterKey []byte, Key, secret string) {
 	encryptKey, nonce := GenVaultKey(masterKey)
 
 	ciphertext, _ := cipher.Encrypt(encryptKey, nonce, secret)
-	fmt.Printf("%x\n", ciphertext)
+	fmt.Printf("%s saved in svault!\n", Key)
 
 	KV := VaultData{time.Now().Unix(), "kv", ciphertext, 0}
 	err := writeStorage(Key, KV)

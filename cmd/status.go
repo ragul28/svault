@@ -13,6 +13,7 @@ func init() {
 var statusCmd = &cobra.Command{
 	Use:   "status",
 	Short: "Get the status of the vault engine",
+	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		vault.StatusVault()
 	},
