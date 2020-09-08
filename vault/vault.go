@@ -50,8 +50,10 @@ func ListVault() {
 
 	counter := 0
 	for mkey := range VDmap {
-		counter++
-		fmt.Printf("%d. %s\n", counter, mkey)
+		if mkey != "master_key" {
+			counter++
+			fmt.Printf("%d. %s\n", counter, mkey)
+		}
 	}
 }
 
