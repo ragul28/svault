@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"os"
-
 	"github.com/ragul28/svault/vault"
 
 	"github.com/spf13/cobra"
@@ -12,7 +10,7 @@ var freshInit bool
 
 func init() {
 	rootCmd.AddCommand(initCmd)
-	initCmd.Flags().BoolVarP(&freshInit, "freshInit", "f", false, "Fresh Init & recreate the masterkey")
+	initCmd.Flags().BoolVarP(&freshInit, "freshInit", "f", false, "Clear vault & recreate the masterkey")
 }
 
 var initCmd = &cobra.Command{
@@ -20,7 +18,6 @@ var initCmd = &cobra.Command{
 	Short: "Init vault secret engine",
 	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		MK := vault.VaultInit(freshInit)
-		os.Setenv("MASTER_KEY", MK)
+		vault.VaultInit(freshInit)
 	},
 }
