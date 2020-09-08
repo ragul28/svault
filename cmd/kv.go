@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"log"
 	"os"
 
@@ -20,24 +21,35 @@ func init() {
 var storeCmd = &cobra.Command{
 	Use:   "store",
 	Short: "Store secret to vault store",
-	Run: func(cmd *cobra.Command, args []string) {
+	Args:  cobra.MaximumNArgs(2),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if len(args) < 2 {
+			return errors.New("Missing arguments key/vaule")
+		}
 		masterkey = checkMasterKey(masterkey)
 		vault.WriteVault([]byte(masterkey), args[0], args[1])
+		return nil
 	},
 }
 
 var getCmd = &cobra.Command{
 	Use:   "get",
 	Short: "Get secret from vault store",
-	Run: func(cmd *cobra.Command, args []string) {
+	Args:  cobra.MaximumNArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if len(args) < 1 {
+			return errors.New("Missing argument key")
+		}
 		masterkey = checkMasterKey(masterkey)
 		vault.ReadVault([]byte(masterkey), args[0])
+		return nil
 	},
 }
 
 var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List stored secret from vault store",
+	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		vault.ListVault()
 	},

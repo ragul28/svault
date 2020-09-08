@@ -30,7 +30,7 @@ func writeStorage(Key string, v VaultData) error {
 
 	file, err := os.OpenFile(getVautlPath(), os.O_CREATE|os.O_WRONLY, 0640)
 	if err != nil {
-		log.Println("File Cannot open/Found", err)
+		log.Println("File cannot open or found", err)
 		return err
 	}
 	encoder := json.NewEncoder(file)
