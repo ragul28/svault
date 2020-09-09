@@ -12,7 +12,7 @@ import (
 )
 
 // Vault init create masterkey & storage file if not initialzed.
-func VaultInit(freshInit bool) string {
+func Init(freshInit bool) string {
 
 	// Remove the File to indicate a fresh init
 	if freshInit {
@@ -32,10 +32,10 @@ func VaultInit(freshInit bool) string {
 		masterKey := genRandomSecretKey(32)
 		fmt.Printf("Master Key: %s\n", masterKey)
 
-		RK := VaultData{time.Now().Unix(), "root", []byte("MasterKeyGenerated"), 0}
+		RK := VaultData{time.Now().Unix(), "root", []byte{}, 0}
 
 		// create dot dir for svault storage
-		os.MkdirAll(filepath.Base(getVautlPath()), os.ModePerm)
+		os.MkdirAll(filepath.Dir(getVautlPath()), os.ModePerm)
 		if writeStorage("master_key", RK) != nil {
 			log.Panic(err)
 		}

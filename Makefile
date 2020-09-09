@@ -1,6 +1,9 @@
 build:
 	GOOS=linux GOARCH=amd64 go build
 
+install:
+	go install
+	
 run:
 	go build && ./svault
 
