@@ -35,7 +35,7 @@ func VaultInit(freshInit bool) string {
 		RK := VaultData{time.Now().Unix(), "root", []byte("MasterKeyGenerated"), 0}
 
 		// create dot dir for svault storage
-		os.MkdirAll(filepath.Base(getVautlPath()), os.ModePerm)
+		os.MkdirAll(filepath.Dir(getVautlPath()), os.ModePerm)
 		if writeStorage("master_key", RK) != nil {
 			log.Panic(err)
 		}

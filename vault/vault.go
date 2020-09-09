@@ -62,7 +62,7 @@ func StatusVault() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		fmt.Printf("Vault Status: initialized\nInit Time: %d\nKV Count: %d\n", VDmap["master_key"].CreatedTime, kvcount)
+		fmt.Printf("Vault Status: initialized\nInit Time: %d\nKV Count: %d\n", VDmap["master_key"].CreatedTime, kvcount-1)
 	}
 }
 
