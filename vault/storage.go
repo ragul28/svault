@@ -42,7 +42,6 @@ func readStorage(Key string) (VaultData, error) {
 	vaultMap := make(map[string]VaultData)
 	data, err := os.Open(getVautlPath())
 	if err != nil {
-		// log.Println(err)
 		return VaultData{}, err
 	}
 
@@ -55,7 +54,6 @@ func getStorage() (map[string]VaultData, int, error) {
 	vaultMap := make(map[string]VaultData)
 	data, err := os.Open(getVautlPath())
 	if err != nil {
-		log.Fatal(err)
 		return map[string]VaultData{}, 0, err
 	}
 
