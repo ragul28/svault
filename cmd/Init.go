@@ -18,6 +18,6 @@ var initCmd = &cobra.Command{
 	Short: "Init vault secret engine",
 	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		vault.VaultInit(freshInit)
+		vault.Init(freshInit)
 	},
 }
