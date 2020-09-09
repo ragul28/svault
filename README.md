@@ -1,17 +1,17 @@
 # SVault
 
-Simple key-value secret Vault inspired by Hasicorp Vault. Project tries to explore the inner working of vault engine with golang. SVault uses AES256-GCM encryption for secret store. This a exploratory project & intend to stay as Experimental.
+Simple key-value secret Vault inspired by Hasicorp Vault. Project tries to explore the inner working of vault engine with golang. SVault uses AES256-GCM encryption for secret store. This is a exploratory project & intend to stay as Experimental.
 
-* Secret KV storage
-* Secret encryption AES256-GCM
+* Simple KV storage for secrets.
+* Industry standard aes256-gcm secret encryption.
 * Easy cli interface.
 
 ## Basic Usage
 
-* Download from pre-compiled binarie from [release page](https://github.com/ragul28/svault/releases).
+* Download pre-compiled binaries from [release page](https://github.com/ragul28/svault/releases).
 
 ```sh
-tar -xvf svault_Linux_arm64.tar.gz
+tar -xvf svault_linux_arm64.tar.gz
 chmod +x svault
 sudo mv svault /usr/local/bin
 ```
