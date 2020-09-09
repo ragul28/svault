@@ -20,7 +20,7 @@ func WriteVault(masterKey []byte, Key, secret string) {
 	KV := VaultData{time.Now().Unix(), "kv", ciphertext, 0}
 	err := writeStorage(Key, KV)
 	if err != nil {
-		log.Panic(err)
+		log.Fatal(err)
 	}
 }
 
@@ -32,11 +32,10 @@ func ReadVault(masterKey []byte, Key string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if len(VD.EnctyptData) == 0 {
-		fmt.Println("VaultKey Not Found:", Key)
+	if len(VD.EnctyptData) < 1 {
+		fmt.Printf("%s not found in svault!\n", Key)
 		os.Exit(0)
 	}
-	// fmt.Printf("%x\n", VD.EnctyptData)
 
 	plaintextNew, _ := cipher.Decrypt(encryptKey, nonce, VD.EnctyptData)
 	fmt.Printf("%s\n", plaintextNew)
@@ -45,7 +44,7 @@ func ReadVault(masterKey []byte, Key string) {
 func ListVault() {
 	VDmap, _, err := getStorage()
 	if err != nil {
-		log.Panic(err)
+		log.Fatal(err)
 	}
 
 	counter := 0
@@ -60,13 +59,13 @@ func ListVault() {
 func StatusVault() {
 	VDmap, kvcount, err := getStorage()
 	if err != nil {
-		log.Panic(err)
+		log.Fatal(err)
 	} else {
-		fmt.Printf("Vault Status: initialized\nInit Time: %d\nKV Count: %d\n", VDmap["master_key"].CreatedTime, kvcount)
+		fmt.Printf("Vault Status: initialized\nInit Time: %d\nKV Count: %d\n", VDmap["master_key"].CreatedTime, kvcount-1)
 	}
 }
 
-// Helper func to get the masterkey & nonce
+// GenVaultKey: Helper func to get the masterkey & nonce
 // TODO: Needs Better strategy
 func GenVaultKey(masterKey []byte) (encryptKey, nonce []byte) {
 	// Genarate sha512 of the masterkey
