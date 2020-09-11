@@ -37,10 +37,3 @@ git clone https://github.com/ragul28/svault
 cd svault
 make build
 ```
-
-## CheckList
-
-- [x] Implement cli like interface for init, store & get
-- [ ] Add persistance storage using boltdb.
-- [ ] Explore the stream interface from crypto/cipher lib for interface chaining. 
-- [ ] Add rest/jrpc interface.
