@@ -1,7 +1,6 @@
 package vault
 
 import (
-	"crypto/sha512"
 	"fmt"
 	"log"
 	"os"
@@ -10,11 +9,9 @@ import (
 	"github.com/ragul28/svault/cipher"
 )
 
-func WriteVault(masterKey []byte, Key, secret string) {
+func WriteVault(encryptKey []byte, Key, secret string) {
 
-	encryptKey, nonce := GenVaultKey(masterKey)
-
-	ciphertext, _ := cipher.Encrypt(encryptKey, nonce, secret)
+	ciphertext, _ := cipher.Encrypt([]byte(encryptKey), secret)
 	fmt.Printf("%s saved in svault!\n", Key)
 
 	KV := VaultData{time.Now().Unix(), "kv", ciphertext, 0}
@@ -24,9 +21,7 @@ func WriteVault(masterKey []byte, Key, secret string) {
 	}
 }
 
-func ReadVault(masterKey []byte, Key string) {
-
-	encryptKey, nonce := GenVaultKey(masterKey)
+func ReadVault(encryptKey []byte, Key string) {
 
 	VD, err := readStorage(Key)
 	if err != nil {
@@ -37,7 +32,7 @@ func ReadVault(masterKey []byte, Key string) {
 		os.Exit(0)
 	}
 
-	plaintextNew, _ := cipher.Decrypt(encryptKey, nonce, VD.EnctyptData)
+	plaintextNew, _ := cipher.Decrypt(encryptKey, VD.EnctyptData)
 	fmt.Printf("%s\n", plaintextNew)
 }
 
@@ -63,21 +58,4 @@ func StatusVault() {
 	} else {
 		fmt.Printf("Vault Status: initialized\nInit Time: %d\nKV Count: %d\n", VDmap["master_key"].CreatedTime, kvcount-1)
 	}
-}
-
-// GenVaultKey: Helper func to get the masterkey & nonce
-// TODO: Needs Better strategy
-func GenVaultKey(masterKey []byte) (encryptKey, nonce []byte) {
-	// Genarate sha512 of the masterkey
-	masterKeysha := sha512.Sum512(masterKey)
-
-	// Get first 32 bytes for secret key. For AES Seal/Open calls, key should be 16 bytes (AES-128) or 32 (AES-256).
-	encryptKey = masterKeysha[:32]
-	// fmt.Printf("secretKey: %x\n", encryptKey)
-
-	// Get following 12 bytes of masterkeysha after secretKey.
-	nonce = masterKeysha[32:44]
-	// fmt.Printf("nonce: %x\n", nonce)
-
-	return encryptKey, nonce
 }
