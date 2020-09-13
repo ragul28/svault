@@ -14,7 +14,12 @@ type VaultData struct {
 	Version     int
 }
 
-func writeStorage(Key string, v VaultData) error {
+type storage interface {
+	writeStorage(Key string) error
+	readStorage(Key string) error
+}
+
+func (vd *VaultData) writeStorage(Key string) error {
 
 	var vaultMap map[string]VaultData
 
@@ -28,7 +33,7 @@ func writeStorage(Key string, v VaultData) error {
 		vaultMap = make(map[string]VaultData)
 	}
 
-	vaultMap[Key] = v
+	vaultMap[Key] = *vd
 
 	// Save vaultmap in data file
 	file, err := os.OpenFile(getVautlPath(), os.O_CREATE|os.O_WRONLY, 0640)
@@ -41,7 +46,7 @@ func writeStorage(Key string, v VaultData) error {
 	return nil
 }
 
-func readStorage(Key string) (VaultData, error) {
+func (vd *VaultData) readStorage(Key string) (VaultData, error) {
 	vaultMap := make(map[string]VaultData)
 	data, err := os.Open(getVautlPath())
 	if err != nil {
