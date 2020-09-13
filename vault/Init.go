@@ -19,10 +19,11 @@ func Init(freshInit bool) string {
 		_ = os.Remove(getVautlPath())
 	}
 
+	var vd VaultData
 	// check secretFile file exist
-	if secretFile, err := readStorage("master_key"); err == nil {
+	if vd, err := vd.readStorage("master_key"); err == nil {
 
-		fmt.Println("Vault already initialized.\nMaster Key Generated at", time.Unix(secretFile.CreatedTime, 0).UTC())
+		fmt.Println("Vault already initialized.\nMaster Key Generated at", time.Unix(vd.CreatedTime, 0).UTC())
 		return ""
 
 	} else {
@@ -36,7 +37,7 @@ func Init(freshInit bool) string {
 
 		// create dot dir for svault storage
 		os.MkdirAll(filepath.Dir(getVautlPath()), os.ModePerm)
-		if writeStorage("master_key", RK) != nil {
+		if RK.writeStorage("master_key") != nil {
 			log.Panic(err)
 		}
 

@@ -15,7 +15,7 @@ func WriteVault(encryptKey []byte, Key, secret string) {
 	fmt.Printf("%s saved in svault!\n", Key)
 
 	KV := VaultData{time.Now().Unix(), "kv", ciphertext, 0}
-	err := writeStorage(Key, KV)
+	err := KV.writeStorage(Key)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -23,16 +23,17 @@ func WriteVault(encryptKey []byte, Key, secret string) {
 
 func ReadVault(encryptKey []byte, Key string) {
 
-	VD, err := readStorage(Key)
+	var vd VaultData
+	vd, err := vd.readStorage(Key)
 	if err != nil {
 		log.Fatal(err)
 	}
-	if len(VD.EnctyptData) < 1 {
+	if len(vd.EnctyptData) < 1 {
 		fmt.Printf("%s not found in svault!\n", Key)
 		os.Exit(0)
 	}
 
-	plaintextNew, _ := cipher.Decrypt(encryptKey, VD.EnctyptData)
+	plaintextNew, _ := cipher.Decrypt(encryptKey, vd.EnctyptData)
 	fmt.Printf("%s\n", plaintextNew)
 }
 
