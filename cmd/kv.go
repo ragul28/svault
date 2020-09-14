@@ -13,7 +13,7 @@ import (
 var masterkey string
 
 func init() {
-	rootCmd.AddCommand(storeCmd, getCmd, listCmd)
+	rootCmd.AddCommand(storeCmd, getCmd, deleteCmd, listCmd)
 	storeCmd.Flags().StringVarP(&masterkey, "masterkey", "m", "", "Pass masterkey as flag")
 	getCmd.Flags().StringVarP(&masterkey, "masterkey", "m", "", "Pass masterkey as flag")
 }
@@ -42,6 +42,20 @@ var getCmd = &cobra.Command{
 		}
 		masterkey = checkMasterKey(masterkey)
 		vault.ReadVault([]byte(masterkey), args[0])
+		return nil
+	},
+}
+
+var deleteCmd = &cobra.Command{
+	Use:   "delete",
+	Short: "Delete secret from vault store",
+	Args:  cobra.MaximumNArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if len(args) < 1 {
+			return errors.New("Missing argument key")
+		}
+		masterkey = checkMasterKey(masterkey)
+		vault.DeleteVault([]byte(masterkey), args[0])
 		return nil
 	},
 }
