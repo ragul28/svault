@@ -2,6 +2,7 @@ package vault
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
 	"os"
 )
@@ -17,6 +18,7 @@ func writeStorage(Key string, v VaultData) error {
 
 	var vaultMap map[string]VaultData
 
+	// Check data file avilable then get storage else create new vault map
 	if _, err := os.Stat(getVautlPath()); err == nil {
 		vaultMap, _, err = getStorage()
 		if err != nil {
@@ -28,6 +30,7 @@ func writeStorage(Key string, v VaultData) error {
 
 	vaultMap[Key] = v
 
+	// Save vaultmap in data file
 	file, err := os.OpenFile(getVautlPath(), os.O_CREATE|os.O_WRONLY, 0640)
 	if err != nil {
 		log.Println("File cannot open or found", err)
@@ -48,6 +51,30 @@ func readStorage(Key string) (VaultData, error) {
 	decoder := json.NewDecoder(data)
 	decoder.Decode(&vaultMap)
 	return vaultMap[Key], nil
+}
+
+func deleteStorage(Key string) error {
+
+	vaultMap, _, err := getStorage()
+	if err != nil {
+		return err
+	}
+
+	_, ok := vaultMap[Key]
+	if ok {
+		delete(vaultMap, Key)
+	} else {
+		return errors.New("Key not found!")
+	}
+
+	file, err := os.OpenFile(getVautlPath(), os.O_CREATE|os.O_WRONLY, 0640)
+	if err != nil {
+		log.Println("File cannot open or found", err)
+		return err
+	}
+	encoder := json.NewEncoder(file)
+	encoder.Encode(vaultMap)
+	return nil
 }
 
 func getStorage() (map[string]VaultData, int, error) {

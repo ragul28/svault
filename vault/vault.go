@@ -36,6 +36,15 @@ func ReadVault(encryptKey []byte, Key string) {
 	fmt.Printf("%s\n", plaintextNew)
 }
 
+func DeleteVault(encryptKey []byte, Key string) {
+
+	err := deleteStorage(Key)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%s deleted from svault!\n", Key)
+}
+
 func ListVault() {
 	VDmap, _, err := getStorage()
 	if err != nil {
