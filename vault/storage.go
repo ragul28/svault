@@ -36,13 +36,15 @@ func (vd *VaultData) writeStorage(Key string) error {
 	vaultMap[Key] = *vd
 
 	// Save vaultmap in data file
-	file, err := os.OpenFile(getVautlPath(), os.O_CREATE|os.O_WRONLY, 0640)
+	file, err := openStorageFile()
 	if err != nil {
-		log.Println("File cannot open or found", err)
 		return err
 	}
 	encoder := json.NewEncoder(file)
-	encoder.Encode(vaultMap)
+	err = encoder.Encode(vaultMap)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -72,9 +74,8 @@ func deleteStorage(Key string) error {
 		return errors.New("Key not found!")
 	}
 
-	file, err := os.OpenFile(getVautlPath(), os.O_CREATE|os.O_WRONLY, 0640)
+	file, err := openStorageFile()
 	if err != nil {
-		log.Println("File cannot open or found", err)
 		return err
 	}
 	encoder := json.NewEncoder(file)
@@ -92,4 +93,13 @@ func getStorage() (map[string]VaultData, int, error) {
 	decoder := json.NewDecoder(data)
 	decoder.Decode(&vaultMap)
 	return vaultMap, len(vaultMap), nil
+}
+
+func openStorageFile() (*os.File, error) {
+	file, err := os.OpenFile(getVautlPath(), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0640)
+	if err != nil {
+		log.Println("File cannot open or found", err)
+		return nil, err
+	}
+	return file, nil
 }
