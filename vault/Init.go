@@ -16,7 +16,7 @@ func Init(freshInit bool) string {
 
 	// Remove the File to indicate a fresh init
 	if freshInit {
-		_ = os.Remove(getVautlPath())
+		os.Remove(getVautlPath())
 	}
 
 	var vd VaultData

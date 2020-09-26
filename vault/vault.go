@@ -14,8 +14,8 @@ func WriteVault(encryptKey []byte, Key, secret string) {
 	ciphertext, _ := cipher.Encrypt([]byte(encryptKey), secret)
 	fmt.Printf("%s saved in svault!\n", Key)
 
-	KV := VaultData{time.Now().Unix(), "kv", ciphertext, 0}
-	err := KV.writeStorage(Key)
+	vd := VaultData{time.Now().Unix(), "kv", ciphertext, 0}
+	err := vd.writeStorage(Key)
 	if err != nil {
 		log.Fatal(err)
 	}
