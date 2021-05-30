@@ -13,6 +13,8 @@ bin/
 tmp/
 dist/
 vault_data/
+svault/
+.vscode/
 
 # Unignore files
 !Dockerfile

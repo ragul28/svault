@@ -16,6 +16,7 @@ func init() {
 	rootCmd.AddCommand(storeCmd, getCmd, deleteCmd, listCmd)
 	storeCmd.Flags().StringVarP(&masterkey, "masterkey", "m", "", "Pass masterkey as flag")
 	getCmd.Flags().StringVarP(&masterkey, "masterkey", "m", "", "Pass masterkey as flag")
+	deleteCmd.Flags().StringVarP(&masterkey, "masterkey", "m", "", "Pass masterkey as flag")
 }
 
 var storeCmd = &cobra.Command{
