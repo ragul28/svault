@@ -3,11 +3,10 @@ name: Go
 on:
   push:
     branches:
-    - master
     - release/*
   pull_request:
     branches:
-    - release/*
+    - master
 
 jobs:
   build:
@@ -18,11 +17,11 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: ^1.16
+        go-version: ^1.17
       id: go
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
 
     - name: Build
-      run: go build -v .
+      run: go build -mod vendor -ldflags="-s -w" -v .
