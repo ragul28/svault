@@ -1,6 +1,7 @@
 package vault
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -9,13 +10,21 @@ import (
 	"github.com/ragul28/svault/cipher"
 )
 
+const bucket = "kvStore"
+
 func WriteVault(encryptKey []byte, Key, secret string) {
 
 	ciphertext, _ := cipher.Encrypt([]byte(encryptKey), secret)
 	fmt.Printf("%s saved in svault!\n", Key)
 
-	vd := VaultData{time.Now().Unix(), "kv", ciphertext, 0}
-	err := vd.writeStorage(Key)
+	boltdb := open(getVautlPath())
+
+	vd, err := json.Marshal(VaultData{time.Now().Unix(), "kv", ciphertext, 0})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = writeDB(boltdb, bucket, Key, vd)
 	if err != nil {
 		log.Fatal(err)
 	}
