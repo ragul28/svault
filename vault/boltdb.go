@@ -1,8 +1,11 @@
 package vault
 
 import (
+	"errors"
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/boltdb/bolt"
@@ -12,7 +15,7 @@ type dbops interface {
 	writeDB(db *bolt.DB, bucket, key, value string) error
 	readDB(db *bolt.DB, bucket, key string) (value string)
 	deleteDB(db *bolt.DB, bucket, key string) error
-	iterate(db *bolt.DB, bucket string) error
+	iterateDB(db *bolt.DB, bucket string) error
 }
 
 func open(file string) *bolt.DB {
@@ -39,20 +42,20 @@ func writeDB(db *bolt.DB, bucket, key string, value []byte) error {
 	return nil
 }
 
-func readDB(db *bolt.DB, bucket, key string) (value string) {
+func readDB(db *bolt.DB, bucket, key string) (value []byte, errres error) {
 	err := db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(bucket))
 		if b == nil {
-			return fmt.Errorf("Bucket %q not found!", bucket)
+			return errors.New(fmt.Sprintf("Bucket %q not found!", bucket))
 		}
 
-		value = string(b.Get([]byte(key)))
+		value = b.Get([]byte(key))
 		return nil
 	})
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	return value
+	return value, nil
 }
 
 func deleteDB(db *bolt.DB, bucket, key string) error {
