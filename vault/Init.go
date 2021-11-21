@@ -2,14 +2,16 @@ package vault
 
 import (
 	"crypto/rand"
+	"encoding/json"
 	"fmt"
 	"log"
 	"math/big"
 	"os"
 	"os/user"
-	"path/filepath"
 	"time"
 )
+
+const master_bucket = "masterStore"
 
 // Vault init create masterkey & storage file if not initialzed.
 func Init(freshInit bool) string {
@@ -19,30 +21,36 @@ func Init(freshInit bool) string {
 		os.Remove(getVautlPath())
 	}
 
-	var vd VaultData
+	boltdb := open(getVautlPath())
+
 	// check secretFile file exist
-	if vd, err := vd.readStorage("master_key"); err == nil {
-
-		fmt.Println("Vault already initialized.\nMaster Key Generated at", time.Unix(vd.CreatedTime, 0).UTC())
-		return ""
-
-	} else {
-
-		fmt.Println("Vault initialized")
+	val, err := readDB(boltdb, master_bucket, "master_key")
+	if err != nil {
 
 		masterKey := genRandomSecretKey(32)
-		fmt.Printf("Master Key: %s\n", masterKey)
 
-		RK := VaultData{time.Now().Unix(), "root", []byte{}, 0}
+		val, err := json.Marshal(VaultData{time.Now().Unix(), "sys", []byte{}, 0})
 
-		// create dot dir for svault storage
-		os.MkdirAll(filepath.Dir(getVautlPath()), os.ModePerm)
-		if RK.writeStorage("master_key") != nil {
-			log.Panic(err)
+		err = writeDB(boltdb, master_bucket, "master_key", val)
+		if err != nil {
+			log.Fatal(err)
 		}
 
+		fmt.Println("Vault initialized")
+		fmt.Printf("Master Key: %s\n", masterKey)
+
 		return string(masterKey)
+
 	}
+
+	var vd VaultData
+	err = json.Unmarshal(val, &vd)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Vault already initialized.\nMaster Key Generated at", time.Unix(vd.CreatedTime, 0).UTC())
+	return ""
 }
 
 // Genrate crypto random secret key from predefined ascii set
