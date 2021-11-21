@@ -32,8 +32,14 @@ func WriteVault(encryptKey []byte, Key, secret string) {
 
 func ReadVault(encryptKey []byte, Key string) {
 
+	boltdb := open(getVautlPath())
+	val, err := readDB(boltdb, bucket, Key)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	var vd VaultData
-	vd, err := vd.readStorage(Key)
+	err = json.Unmarshal(val, &vd)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -66,10 +72,15 @@ func ListVault() {
 }
 
 func StatusVault() {
-	VDmap, kvcount, err := getStorage()
+	boltdb := open(getVautlPath())
+	val, err := readDB(boltdb, master_bucket, "master_key")
 	if err != nil {
 		log.Fatal(err)
-	} else {
-		fmt.Printf("Vault Status: initialized\nInit Time: %d\nKV Count: %d\n", VDmap["master_key"].CreatedTime, kvcount-1)
 	}
+	var vd VaultData
+	err = json.Unmarshal(val, &vd)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Vault Status: initialized\nInit Time: ", time.Unix(vd.CreatedTime, 0).Format("2006-02-01 15:04:05"))
 }
