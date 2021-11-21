@@ -48,7 +48,8 @@ func ReadVault(encryptKey []byte, Key string) {
 
 func DeleteVault(encryptKey []byte, Key string) {
 
-	err := deleteStorage(Key)
+	boltdb := open(getVautlPath())
+	err := deleteDB(boltdb, bucket, Key)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -56,17 +57,11 @@ func DeleteVault(encryptKey []byte, Key string) {
 }
 
 func ListVault() {
-	VDmap, _, err := getStorage()
+
+	boltdb := open(getVautlPath())
+	_, err := iterateDB(boltdb, bucket)
 	if err != nil {
 		log.Fatal(err)
-	}
-
-	counter := 0
-	for mkey := range VDmap {
-		if mkey != "master_key" {
-			counter++
-			fmt.Printf("%d. %s\n", counter, mkey)
-		}
 	}
 }
 
