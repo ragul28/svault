@@ -16,6 +16,9 @@ type dbops interface {
 }
 
 func open(file string) *bolt.DB {
+	if err := os.MkdirAll(filepath.Dir(file), os.ModePerm); err != nil {
+		log.Fatal(err)
+	}
 	db, err := bolt.Open(file, 0600, &bolt.Options{Timeout: 1 * time.Second})
 	if err != nil {
 		//handle error
