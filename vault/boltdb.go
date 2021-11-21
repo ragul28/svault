@@ -73,20 +73,22 @@ func deleteDB(db *bolt.DB, bucket, key string) error {
 	return nil
 }
 
-func iterate(db *bolt.DB, bucket string) error {
-	err := db.View(func(tx *bolt.Tx) error {
+func iterateDB(db *bolt.DB, bucket string) (counter int, err error) {
+	err = db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(bucket))
 
 		c := b.Cursor()
-		for k, v := c.First(); k != nil; k, v = c.Next() {
-			fmt.Printf("%s: %s\n", k, v)
+		counter = 0
+		for k, _ := c.First(); k != nil; k, _ = c.Next() {
+			counter++
+			fmt.Printf("%d. %s\n", counter, k)
 		}
 		return nil
 	})
 
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	return nil
+	return 0, nil
 }
