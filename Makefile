@@ -7,7 +7,7 @@ install:
 run:
 	go build && ./svault
 
-init:
+mod_init:
 	go mod init github.com/ragul28/svault
 	go get -u
 
