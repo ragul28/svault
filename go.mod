@@ -1,6 +1,6 @@
 module github.com/ragul28/svault
 
-go 1.18
+go 1.19
 
 require (
 	github.com/boltdb/bolt v1.3.1
