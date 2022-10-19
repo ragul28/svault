@@ -29,7 +29,7 @@ func Init(freshInit bool) string {
 
 		masterKey := genRandomSecretKey(32)
 
-		val, err := json.Marshal(VaultData{time.Now().Unix(), "sys", []byte{}, 0})
+		val, _ := json.Marshal(VaultData{time.Now().Unix(), "sys", []byte{}, 0})
 
 		err = writeDB(boltdb, master_bucket, "master_key", val)
 		if err != nil {

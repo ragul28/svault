@@ -82,5 +82,5 @@ func StatusVault() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Vault Status: initialized\nInit Time: ", time.Unix(vd.CreatedTime, 0).Format("2006-02-01 15:04:05"))
+	fmt.Println("Vault Status: initialized\nInit Time: ", time.Unix(vd.CreatedTime, 0).Format("2006-01-02 15:04:05"))
 }
