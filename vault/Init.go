@@ -38,6 +38,7 @@ func Init(freshInit bool) string {
 
 		fmt.Println("Vault initialized")
 		fmt.Printf("Master Key: %s\n", masterKey)
+		fmt.Printf("\n\tHint: export MASTER_KEY=%s\n\n", masterKey)
 
 		return string(masterKey)
 
