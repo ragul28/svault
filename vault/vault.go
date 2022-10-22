@@ -35,13 +35,14 @@ func ReadVault(encryptKey []byte, Key string) {
 	boltdb := open(getVautlPath())
 	val, err := readDB(boltdb, bucket, Key)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln("svault is empty!")
 	}
 
 	var vd VaultData
 	err = json.Unmarshal(val, &vd)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Printf("%s not found in svault!\n", Key)
+		// log.Fatal(err)
 	}
 	if len(vd.EnctyptData) < 1 {
 		fmt.Printf("%s not found in svault!\n", Key)
@@ -67,7 +68,8 @@ func ListVault() {
 	boltdb := open(getVautlPath())
 	_, err := iterateDB(boltdb, bucket)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Printf("No keys found, Vault is empty!")
+		// log.Fatal(err)
 	}
 }
 
