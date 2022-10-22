@@ -66,6 +66,14 @@ func deleteDB(db *bolt.DB, bucket, key string) error {
 }
 
 func iterateDB(db *bolt.DB, bucket string) (counter int, err error) {
+
+	defer func() {
+		if err := recover(); err != nil {
+			log.Fatalln("svault is empty!")
+			// fmt.Fprintf(os.Stderr, "Exception: %v\n", err)
+		}
+	}()
+
 	err = db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(bucket))
 
