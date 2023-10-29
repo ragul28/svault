@@ -48,9 +48,10 @@ var getCmd = &cobra.Command{
 }
 
 var deleteCmd = &cobra.Command{
-	Use:   "delete",
-	Short: "Delete secret from vault store",
-	Args:  cobra.MaximumNArgs(1),
+	Use:     "delete",
+	Aliases: []string{"rm"},
+	Short:   "Delete secret from vault store",
+	Args:    cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
 			return errors.New("Missing argument key")
@@ -62,9 +63,10 @@ var deleteCmd = &cobra.Command{
 }
 
 var listCmd = &cobra.Command{
-	Use:   "list",
-	Short: "List stored secret from vault store",
-	Args:  cobra.NoArgs,
+	Use:     "list",
+	Aliases: []string{"ls"},
+	Short:   "List stored secret from vault store",
+	Args:    cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		vault.ListVault()
 	},

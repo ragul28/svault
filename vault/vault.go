@@ -42,7 +42,7 @@ func ReadVault(encryptKey []byte, Key string) {
 	err = json.Unmarshal(val, &vd)
 	if err != nil {
 		fmt.Printf("%s not found in svault!\n", Key)
-		// log.Fatal(err)
+		os.Exit(0)
 	}
 	if len(vd.EnctyptData) < 1 {
 		fmt.Printf("%s not found in svault!\n", Key)
