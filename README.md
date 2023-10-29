@@ -6,12 +6,12 @@ Simple key-value secret Vault inspired by Hasicorp Vault. Project tries to explo
 * Industry standard aes256-gcm secret encryption.
 * Easy cli interface.
 
-## Basic Usage
+## Usage guide
 
-* Download pre-compiled binaries from [release page](https://github.com/ragul28/svault/releases).
+* Download pre-compiled binaries from [release page](https://github.com/ragul28/svault/releases/latest).
 
 ```sh
-tar -xvf svault_linux_arm64.tar.gz
+tar -xvf svault_x.x.x_darwin_amd64.tar.gz
 chmod +x svault
 sudo mv svault /usr/local/bin
 ```
@@ -26,6 +26,7 @@ svault init
 export MASTER_KEY=<master_key>
 
 svault store github_token xxxxxxxx
+svault list
 svault get github_token
 ```
 
